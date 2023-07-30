@@ -1,0 +1,70 @@
+var score = 0;
+var lives = 3;
+onEvent("Play", "click", function() {
+  var username = getText("Name");
+  setText("Intro",("Welcome, "+username.toUpperCase())+" Are you ready for some Adventure!!!" );
+  var time = 13;
+  var timeout = false;
+  timedLoop(1000, function() {
+ time = time - 1;
+setText("lblTime", time);
+setText("timer", "00:"+time);
+if (time <= 11) {
+  setScreen("GameScreen");
+}
+if ((time == 7 || time == 8) || (time == 4 || time == 3)) {
+showElement("bomb");
+} else {
+  hideElement("bomb");
+}
+if (time <= 0) {
+  timeout = true;
+  stopTimedLoop();
+}
+if (lives == 1 || timeout && score < 10) {
+  setScreen("overLose");
+  stopTimedLoop();
+} else if ((score == 10)) {
+  setScreen("OverWin");
+} 
+});
+});
+onEvent("restart1", "click", function( ) {
+reset(); });
+onEvent("restart2", "click", function( ) {
+  reset();
+});
+function reset() {
+  score = 0;
+  lives = 3;
+  setText("Score", score);
+  setText("lives", "0" + lives);
+  setScreen("WelcomeScreen");
+  setText("Name", "");
+  setText("Intro", "");
+}
+onEvent("Dory", "click", function( ) {
+  addScore();
+  setPosition("Dory", randomNumber(50, 270), randomNumber(70, 370));
+});
+onEvent("Nemo", "click", function( ) {
+addScore();
+  setPosition("Nemo", randomNumber(50, 270), randomNumber(70, 370));
+});
+onEvent("Orange", "click", function( ) {
+  addScore();
+  setPosition("Orange",randomNumber(50, 270), randomNumber(70, 370));
+});
+function addScore() {
+  score = score+1;
+  setText("Score", score);
+}
+onEvent("bomb", "click", function( ) {
+  lives = lives - 1;
+  setPosition("bomb", randomNumber(50, 270), randomNumber(70, 370));
+  hideElement("bomb");
+  setText("lives", "0"+lives);
+  setPosition("Orange",randomNumber(50, 270), randomNumber(70, 370));
+  setPosition("Nemo", randomNumber(50, 270), randomNumber(70, 370));
+  setPosition("Dory", randomNumber(50, 270), randomNumber(70, 370));
+});
